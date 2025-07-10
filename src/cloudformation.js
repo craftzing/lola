@@ -42,7 +42,7 @@ export default class Cloudformation {
         await this.cloudformation.send(
             new ValidateTemplateCommand({
                 TemplateBody,
-            })
+            }),
         );
     }
 
@@ -57,7 +57,7 @@ export default class Cloudformation {
             new UpdateTerminationProtectionCommand({
                 EnableTerminationProtection: status,
                 StackName,
-            })
+            }),
         );
     }
 
@@ -71,14 +71,14 @@ export default class Cloudformation {
         const events = await this.cloudformation.send(
             new DescribeStackEventsCommand({
                 StackName,
-            })
+            }),
         );
 
         // Filter out only the good events.
         let result;
         if (events.StackEvents) {
             result = await events.StackEvents.filter(
-                (event) => !ClientRequestToken || event.ClientRequestToken === ClientRequestToken
+                (event) => !ClientRequestToken || event.ClientRequestToken === ClientRequestToken,
             );
         }
 
@@ -97,7 +97,7 @@ export default class Cloudformation {
                 Parameters: transposedParams,
                 Tags: transposedTags,
                 TemplateBody,
-            })
+            }),
         );
     }
 
@@ -125,7 +125,7 @@ export default class Cloudformation {
                 Tags: transposedTags,
                 TemplateBody,
                 // TimeoutInMinutes: 0
-            })
+            }),
         );
     }
 
@@ -139,7 +139,7 @@ export default class Cloudformation {
             new DescribeStacksCommand({
                 StackName,
                 credentials: this.credentials,
-            })
+            }),
         );
         return data.Stacks[0];
     }
@@ -154,7 +154,7 @@ export default class Cloudformation {
             new DeleteStackCommand({
                 StackName,
                 ClientRequestToken,
-            })
+            }),
         );
     }
 
@@ -185,7 +185,7 @@ export default class Cloudformation {
                 Parameters: transposedParams,
                 Tags: transposedTags,
                 TemplateBody: body,
-            })
+            }),
         );
 
         return result.Id;
@@ -202,7 +202,7 @@ export default class Cloudformation {
             new DescribeChangeSetCommand({
                 ChangeSetName,
                 StackName,
-            })
+            }),
         );
     }
 
@@ -217,7 +217,7 @@ export default class Cloudformation {
             new DeleteChangeSetCommand({
                 ChangeSetName,
                 StackName,
-            })
+            }),
         );
     }
 

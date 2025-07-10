@@ -34,10 +34,10 @@ export default class Config {
                     await Promise.all(
                         Object.keys(newConfig.stacks[stack].actions).map(async (action) => {
                             await Actions.validateAction(newConfig.stacks[stack].actions[action]);
-                        })
+                        }),
                     );
                 }
-            })
+            }),
         );
 
         // Projects have environments.
@@ -108,9 +108,9 @@ export default class Config {
                         if (!newConfig.environments[environmentName][stackName].profile) {
                             throw new Error(`Stack ${stackName} has no profile in ${environmentName}`);
                         }
-                    })
+                    }),
                 );
-            })
+            }),
         );
 
         // Stacks in environments might have options. Validate them and/or copy over from default.

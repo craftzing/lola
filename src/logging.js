@@ -2,15 +2,15 @@ import chalk from 'chalk';
 
 /**
  * Format date for logging
- * @param {Date} date 
+ * @param {Date} date
  * @returns {string}
  */
 function formatTime(date = new Date()) {
-    return date.toLocaleTimeString('en-GB', { 
-        hour12: false, 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit' 
+    return date.toLocaleTimeString('en-GB', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
     });
 }
 
@@ -34,7 +34,7 @@ export default class Logging {
                 event.ResourceType
             } - ${chalk.yellow(event.LogicalResourceId)} ${chalk.green(event.ResourceStatus)} ${
                 event.ResourceStatusReason || ''
-            }`
+            }`,
         );
         /* eslint-enable max-len */
     }

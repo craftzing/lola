@@ -13,17 +13,15 @@
         "@aws-sdk/client-sts": "^3.294.0",
         "@aws-sdk/credential-providers": "^3.294.0",
         "chalk": "^5.2.0",
-        "commander": "^10.0.0",
-        "inquirer": "^9.1.5",
-        "js-yaml": "^4.1.0",
-        "moment": "^2.29.1",
-        "path": "^0.12.7"
+        "commander": "^14.0.0",
+        "inquirer": "^12.7.0",
+        "js-yaml": "^4.1.0"
     },
     "bin": {
         "lola": "./bin/index.js"
     },
     "engines": {
-        "node": ">=18"
+        "node": ">=22"
     },
     "scripts": {
         "lint": "prettier . --write"
@@ -32,6 +30,6 @@
         "access": "public"
     },
     "devDependencies": {
-        "prettier": "^2.8.5"
+        "prettier": "^3.6.2"
     }
 }

@@ -1,11 +1,11 @@
 {
     "name": "lola",
-    "version": "2.0.2",
+    "version": "2.1.1",
     "description": "AWS related deployment helper...",
     "main": "lola.js",
     "type": "module",
-    "repository": "git@github.com:wieni/lola.git",
-    "author": "Bart Van Thillo <bart@wieni.be>",
+    "repository": "git@github.com:craftzing/lola.git",
+    "author": "Bart Van Thillo <bart.vanthillo@craftzing.com>",
     "license": "MIT",
     "preferGlobal": true,
     "dependencies": {

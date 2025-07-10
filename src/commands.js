@@ -87,7 +87,7 @@ export default class Commands {
                     } catch (err) {
                         throw new Error(`pre-deploy: ${err}`);
                     }
-                })
+                }),
             );
         }
 
@@ -124,7 +124,7 @@ export default class Commands {
                     } catch (err) {
                         throw new Error(`post-deploy: ${err}`);
                     }
-                })
+                }),
             );
         }
     }
@@ -257,11 +257,11 @@ export default class Commands {
         try {
             await this.cloudformation.describeChangeSet(
                 this.getFullStackName(),
-                CloudFormation.getHash(this.getFullStackName())
+                CloudFormation.getHash(this.getFullStackName()),
             );
             await this.cloudformation.deleteChangeSet(
                 this.getFullStackName(),
-                CloudFormation.getHash(this.getFullStackName())
+                CloudFormation.getHash(this.getFullStackName()),
             );
         } catch (error) {
             if (!error.Error || error.Error.Code !== 'ChangeSetNotFound') {
@@ -276,7 +276,7 @@ export default class Commands {
             body,
             this.params,
             this.getTags(),
-            'UPDATE'
+            'UPDATE',
         );
 
         // Wait until it's created.

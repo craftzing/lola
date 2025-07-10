@@ -13,7 +13,7 @@ export default class Actions {
                     if (action === actionName) {
                         actionPath = config.stacks[stack].actions[actionName];
                     }
-                })
+                }),
             );
         }
         return actionPath;

@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html). (Format adopted after v3.0.0.)
 
+## [2.1.0] - 2025-07-10 
+
+### Added
+- Added nicer fallback when the user exits with ctrl-c
+
+### Changed
+- Upgraded various dependencies
+- Raised the minimum Node.js version to 22.x
+- Replaced moment.js with built-in Date methods
+- Remove path dependency (not used)
+
 ## [2.0.1] - 2023-04-07
 
 ### Fixed

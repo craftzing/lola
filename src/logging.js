@@ -1,5 +1,18 @@
 import chalk from 'chalk';
-import moment from 'moment';
+
+/**
+ * Format date for logging
+ * @param {Date} date 
+ * @returns {string}
+ */
+function formatTime(date = new Date()) {
+    return date.toLocaleTimeString('en-GB', { 
+        hour12: false, 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit' 
+    });
+}
 
 /**
  * Lola logging functions.
@@ -7,7 +20,7 @@ import moment from 'moment';
  */
 export default class Logging {
     static async log(message) {
-        console.log(`[${chalk.gray(moment().format('HH:mm:ss'))}] ${message}`);
+        console.log(`[${chalk.gray(formatTime())}] ${message}`);
     }
 
     static async logError(subject, message) {
@@ -17,7 +30,7 @@ export default class Logging {
     static async logEvent(stackName, action, event) {
         /* eslint-disable max-len */
         console.log(
-            `[${chalk.gray(moment(event.Timestamp).format('HH:mm:ss'))}] ${action} ${chalk.cyan(stackName)}: ${
+            `[${chalk.gray(formatTime(new Date(event.Timestamp)))}] ${action} ${chalk.cyan(stackName)}: ${
                 event.ResourceType
             } - ${chalk.yellow(event.LogicalResourceId)} ${chalk.green(event.ResourceStatus)} ${
                 event.ResourceStatusReason || ''

@@ -135,16 +135,23 @@ export default class Commands {
             throw new Error(`Tried to delete non-existing stack: ${this.stackName}`);
         }
 
-        const input = await inquirer.prompt([
-            {
-                type: 'confirm',
-                name: 'confirm',
-                message: `Delete ${this.stackName}: `,
-            },
-        ]);
+        try {
+            const input = await inquirer.prompt([
+                {
+                    type: 'confirm',
+                    name: 'confirm',
+                    message: `Delete ${this.stackName}: `,
+                },
+            ]);
 
-        if (!input.confirm) {
-            throw new Error('Operation aborted by user');
+            if (!input.confirm) {
+                throw new Error('Operation aborted by user');
+            }
+        } catch (error) {
+            if (error.message && error.message.includes('User force closed')) {
+                throw new Error('Operation cancelled by user');
+            }
+            throw error;
         }
 
         const token = this.generateToken('delete');
@@ -165,14 +172,22 @@ export default class Commands {
             throw new Error(`No actions found for ${this.stackName}`);
         }
 
-        const input = await inquirer.prompt([
-            {
-                type: 'list',
-                name: 'action',
-                message: 'Action: ',
-                choices: Object.keys(this.config.stacks[this.stackName].actions),
-            },
-        ]);
+        let input;
+        try {
+            input = await inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'action',
+                    message: 'Action: ',
+                    choices: Object.keys(this.config.stacks[this.stackName].actions),
+                },
+            ]);
+        } catch (error) {
+            if (error.message && error.message.includes('User force closed')) {
+                throw new Error('Operation cancelled by user');
+            }
+            throw error;
+        }
 
         const stackData = await this.cloudformation.describeStack(this.getFullStackName());
 
@@ -198,14 +213,22 @@ export default class Commands {
         const stackData = await this.cloudformation.describeStack(this.getFullStackName());
         let status = String(stackData.EnableTerminationProtection);
 
-        const input = await inquirer.prompt([
-            {
-                type: 'list',
-                name: 'action',
-                message: `Termination protection status is currently ${status}. Change status to: `,
-                choices: ['true', 'false'],
-            },
-        ]);
+        let input;
+        try {
+            input = await inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'action',
+                    message: `Termination protection status is currently ${status}. Change status to: `,
+                    choices: ['true', 'false'],
+                },
+            ]);
+        } catch (error) {
+            if (error.message && error.message.includes('User force closed')) {
+                throw new Error('Operation cancelled by user');
+            }
+            throw error;
+        }
 
         if (status !== input.action) {
             status = true;

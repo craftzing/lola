@@ -26,15 +26,22 @@ export default class Options {
 
         // Stack.
         if (!deployOptions.stacks) {
-            const input = await inquirer.prompt([
-                {
-                    type: 'list',
-                    name: 'stack',
-                    message: 'Stack: ',
-                    choices: stackChoices,
-                },
-            ]);
-            deployOptions.stacks = [input.stack];
+            try {
+                const input = await inquirer.prompt([
+                    {
+                        type: 'list',
+                        name: 'stack',
+                        message: 'Stack: ',
+                        choices: stackChoices,
+                    },
+                ]);
+                deployOptions.stacks = [input.stack];
+            } catch (error) {
+                if (error.message && error.message.includes('User force closed')) {
+                    throw new Error('User cancelled the operation');
+                }
+                throw error;
+            }
         }
         deployOptions.stacks.forEach((name) => {
             if (Object.keys(config.stacks).indexOf(name) === -1) {
@@ -59,16 +66,23 @@ export default class Options {
         } else if (allowedEnvs.length === 1) {
             deployOptions.environments = allowedEnvs;
         } else {
-            const input = await inquirer.prompt([
-                {
-                    type: 'list',
-                    name: 'environment',
-                    message: 'Environment: ',
-                    choices: allowedEnvs,
-                },
-            ]);
+            try {
+                const input = await inquirer.prompt([
+                    {
+                        type: 'list',
+                        name: 'environment',
+                        message: 'Environment: ',
+                        choices: allowedEnvs,
+                    },
+                ]);
 
-            deployOptions.environments = [input.environment];
+                deployOptions.environments = [input.environment];
+            } catch (error) {
+                if (error.message && error.message.includes('User force closed')) {
+                    throw new Error('User cancelled the operation');
+                }
+                throw error;
+            }
         }
         deployOptions.environments.forEach((name) => {
             if (Object.keys(config.environments).indexOf(name) === -1) {

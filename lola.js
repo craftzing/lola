@@ -8,6 +8,22 @@ import Config from './src/config.js';
 import Options from './src/options.js';
 import Commands from './src/commands.js';
 
+// Handle Ctrl+C gracefully
+process.on('SIGINT', () => {
+    console.log('\n\nOperation cancelled by user');
+    process.exit(0);
+});
+
+// Handle uncaught promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+    if (reason && reason.message && reason.message.includes('User force closed')) {
+        console.log('\n\nOperation cancelled by user');
+        process.exit(0);
+    }
+    console.error('Unhandled promise rejection:', reason);
+    process.exit(1);
+});
+
 const start = async (command) => {
     Logging.logIfVerbose('Reading config file', program.verbose);
 
@@ -60,10 +76,22 @@ const start = async (command) => {
         options = await Options.validateOptions(options, config);
     } catch (err) {
         Logging.logError('Options', err);
+        // If validation fails or is interrupted, exit gracefully
+        if (err.message && err.message.includes('User force closed')) {
+            process.exit(0);
+        }
+        process.exit(1);
     }
 
-    options.stacks.forEach(async (stackName) => {
-        options.environments.forEach(async (env) => {
+    // Check if options are valid before proceeding
+    if (!options || !options.stacks || !options.environments) {
+        Logging.logError('Options', 'Invalid options configuration');
+        process.exit(1);
+    }
+
+    // Use for...of instead of forEach for proper async handling
+    for (const stackName of options.stacks) {
+        for (const env of options.environments) {
             // Run said action.
             const commands = new Commands(config, stackName, env);
 
@@ -134,8 +162,8 @@ const start = async (command) => {
                     }
                     break;
             }
-        });
-    });
+        }
+    }
 };
 
 program
